@@ -36,35 +36,44 @@ class PixelTool(SelectTool):
 	def deactivate(self):
 		pass
 	
-	def mouseDown1_(self, event):
-		pass
-	
-	def mouseUp_(self, event):
+	def setPixel(self, event, force = 0):
+		Loc = self.editViewController().graphicView().getActiveLocation_(event)
+		layer = self.editViewController().graphicView().activeLayer()
+		font = layer.font()
+		pixel = font.glyphs["pixel"]
+		if pixel is None:
+			Message("Missing glyph", "Please add pixel glyph")
+			return
+		grid = font.grid
+		origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
 		
-		if not self.dragging():
-			Loc = self.editViewController().graphicView().getActiveLocation_(event)
-			print Loc
-			layer = self.editViewController().graphicView().activeLayer()
-			font = layer.font()
-			pixel = font.glyphs["pixel"]
-			if pixel is None:
-				Message("Missing glyph", "Please add pixel glyph")
-				return
-			print font
-			grid = font.grid
-			origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
-			foundPixel = False
-			for c in layer.components:
-				if c.componentName == "pixel" and distance(c.position, origin) < 1:
-					foundPixel = True
+		
+		for c in layer.components:
+			if c.componentName == "pixel" and distance(c.position, origin) < 1:
+				if force != 1:
 					layer.components.remove(c)
-					break
-			if not foundPixel:
-				c = GSComponent("pixel")
-				c.position = origin
-				layer.components.append(c)
-		else:
-			objc.super(PixelTool, self).mouseUp_(event)
+				return -1
+		
+		if force != -1:
+			c = GSComponent("pixel")
+			c.position = origin
+			layer.components.append(c)
+		return 1
+	
+	def mouseDown_(self, event):
+		if event.clickCount() == 3:
+			self.mouseTripleDown_(event)
+			return
+		if event.clickCount() == 2:
+			self.mouseDoubleDown_(event)
+			return
+		self.initialMode = self.setPixel(event)
+	
+	def mouseDragged_(self, event):
+		self.setPixel(event, self.initialMode)
+		
+	def mouseUp_(self, event):
+		pass
 	
 	def conditionalContextMenus(self):
 		pass
