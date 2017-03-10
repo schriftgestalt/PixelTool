@@ -19,7 +19,9 @@ class PixelTool(SelectTool):
 	
 	def settings(self):
 		self.name = "Pixel Tool"
-		self.keyboardShortcut = 'x'
+		Defaults = NSUserDefaults.standardUserDefaults()
+		Defaults.registerDefaults_({"PixelTool.hotKey" : "x"})
+		self.keyboardShortcut = Glyphs.defaults["PixelTool.hotKey"]
 	
 	def start(self):
 		pass
