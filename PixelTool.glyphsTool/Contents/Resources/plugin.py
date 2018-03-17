@@ -41,7 +41,7 @@ class PixelTool(SelectTool):
 		except:
 			return 1
 		
-		Loc = .getActiveLocation_(event)
+		Loc = editView.getActiveLocation_(event)
 		layer = editView.activeLayer()
 		font = layer.font()
 		pixel = font.glyphs["pixel"]
