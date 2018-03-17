@@ -36,26 +36,32 @@ class PixelTool(SelectTool):
 		pass
 	
 	def setPixel(self, event, force = 0):
-		Loc = self.editViewController().graphicView().getActiveLocation_(event)
-		layer = self.editViewController().graphicView().activeLayer()
+		try:
+			editView = self.editViewController().graphicView()
+		except:
+			return 1
+		
+		Loc = .getActiveLocation_(event)
+		layer = editView.activeLayer()
 		font = layer.font()
 		pixel = font.glyphs["pixel"]
 		if pixel is None:
 			Message("Missing glyph", "Please add pixel glyph")
-			return
+			return None
 		grid = font.grid
 		origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
-		
+	
 		for c in layer.components:
 			if c.componentName == "pixel" and distance(c.position, origin) < 1:
 				if force != 1:
 					layer.components.remove(c)
 				return -1
-		
+	
 		if force != -1:
 			c = GSComponent("pixel")
 			c.position = origin
 			layer.components.append(c)
+		
 		return 1
 	
 	def mouseDown_(self, event):
