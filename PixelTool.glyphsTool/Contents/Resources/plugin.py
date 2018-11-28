@@ -59,6 +59,7 @@ class PixelTool(SelectTool):
 	
 		if force != -1:
 			c = GSComponent("pixel")
+			c.automaticAlignment = False
 			c.position = origin
 			layer.components.append(c)
 		
