@@ -53,7 +53,19 @@ class PixelTool(SelectTool):
 		origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
 	
 		for c in layer.components:
-			if c.componentName == "pixel" and distance(c.position, origin) < 1:
+			currOrigin = NSPoint(origin.x, origin.y)
+			scale = c.scale
+			if scale[0] < 0:
+				currOrigin.x += grid
+
+			if scale[1] < 0:
+				currOrigin.y += grid
+
+			if (c.rotation + 180.0) % 360.0 < 0.001:
+				currOrigin.x += grid
+				currOrigin.y += grid
+			
+			if c.componentName == "pixel" and distance(c.position, currOrigin) < 1:
 				if force != 1:
 					layer.components.remove(c)
 				return -1
