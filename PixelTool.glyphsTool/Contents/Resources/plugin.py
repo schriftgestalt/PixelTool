@@ -44,37 +44,38 @@ class PixelTool(SelectTool):
 		
 		Loc = editView.getActiveLocation_(event)
 		layer = editView.activeLayer()
-		font = layer.font()
-		pixel = font.glyphs["pixel"]
-		if pixel is None:
-			Message("Missing glyph", "Please add pixel glyph")
-			return None
-		grid = font.grid
-		origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
+		if layer:
+			font = layer.font()
+			pixel = font.glyphs["pixel"]
+			if pixel is None:
+				Message("Missing glyph", "Please add pixel glyph")
+				return None
+			grid = font.grid
+			origin = NSPoint(math.floor(Loc.x / grid) * grid, math.floor(Loc.y / grid) * grid)
 	
-		for c in layer.components:
-			currOrigin = NSPoint(origin.x, origin.y)
-			scale = c.scale
-			if scale[0] < 0:
-				currOrigin.x += grid
+			for c in layer.components:
+				currOrigin = NSPoint(origin.x, origin.y)
+				scale = c.scale
+				if scale[0] < 0:
+					currOrigin.x += grid
 
-			if scale[1] < 0:
-				currOrigin.y += grid
+				if scale[1] < 0:
+					currOrigin.y += grid
 
-			if (c.rotation + 180.0) % 360.0 < 0.001:
-				currOrigin.x += grid
-				currOrigin.y += grid
+				if (c.rotation + 180.0) % 360.0 < 0.001:
+					currOrigin.x += grid
+					currOrigin.y += grid
 			
-			if c.componentName == "pixel" and distance(c.position, currOrigin) < 1:
-				if force != 1:
-					layer.components.remove(c)
-				return -1
+				if c.componentName == "pixel" and distance(c.position, currOrigin) < 1:
+					if force != 1:
+						layer.components.remove(c)
+					return -1
 	
-		if force != -1:
-			c = GSComponent("pixel")
-			c.automaticAlignment = False
-			c.position = origin
-			layer.components.append(c)
+			if force != -1:
+				c = GSComponent("pixel")
+				c.automaticAlignment = False
+				c.position = origin
+				layer.components.append(c)
 		
 		return 1
 	
