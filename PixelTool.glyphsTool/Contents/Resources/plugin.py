@@ -16,26 +16,32 @@ from GlyphsApp.plugins import *
 import math
 
 class PixelTool(SelectTool):
-	
+
+	@objc.python_method
 	def settings(self):
 		self.name = "Pixel Tool"
 		Defaults = NSUserDefaults.standardUserDefaults()
 		Defaults.registerDefaults_({"PixelTool.hotKey" : "x"})
 		self.keyboardShortcut = Glyphs.defaults["PixelTool.hotKey"]
 		self.initialMode = 0
-	
+
+	@objc.python_method
 	def start(self):
 		pass
-	
+
+	@objc.python_method
 	def activate(self):
 		pass
-	
+
+	@objc.python_method
 	def background(self, layer):
 		pass
-	
+
+	@objc.python_method
 	def deactivate(self):
 		pass
-	
+
+	@objc.python_method
 	def setPixel(self, event, force = 0):
 		try:
 			editView = self.editViewController().graphicView()
@@ -93,7 +99,8 @@ class PixelTool(SelectTool):
 		
 	def mouseUp_(self, event):
 		pass
-	
+
+	@objc.python_method
 	def __file__(self):
 		"""Please leave this method unchanged"""
 		return __file__
