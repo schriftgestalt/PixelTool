@@ -15,9 +15,9 @@
 	<key>CFBundleName</key>
 	<string>Pixel Tool</string>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>5</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright, Georg Seifert, 2020</string>
 	<key>NSPrincipalClass</key>
