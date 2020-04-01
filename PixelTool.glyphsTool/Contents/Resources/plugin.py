@@ -11,6 +11,7 @@
 #
 ###########################################################################################################
 
+from AppKit import NSCursor
 from GlyphsApp import *
 from GlyphsApp.plugins import *
 import math
@@ -24,6 +25,7 @@ class PixelTool(SelectTool):
 		Defaults.registerDefaults_({"PixelTool.hotKey" : "x"})
 		self.keyboardShortcut = Glyphs.defaults["PixelTool.hotKey"]
 		self.initialMode = 0
+		self.cursor = NSCursor.crosshairCursor()
 
 	@objc.python_method
 	def start(self):
@@ -32,6 +34,9 @@ class PixelTool(SelectTool):
 	@objc.python_method
 	def activate(self):
 		pass
+
+	def standardCursor(self):
+		return self.cursor
 
 	@objc.python_method
 	def background(self, layer):
